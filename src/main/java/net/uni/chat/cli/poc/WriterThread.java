@@ -25,9 +25,9 @@ public class WriterThread extends Thread{
         client.setUserName(userName);
         writer.println(String.format("New User joined %s",userName));
         while(true) {
-            String text = console.readLine(userName+" :");
-            if(!text.contains("New User joined")) {
-                writer.println(text);
+            String text = console.readLine(userName+":");
+            if(!text.equalsIgnoreCase("")) {
+                writer.println(userName+":"+text);
             }
         }
     }

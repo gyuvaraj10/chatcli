@@ -14,8 +14,8 @@ public class Client {
     public void runClient() {
         try{
             Socket s=new Socket("localhost",8888);
-            new ReaderThread(s, this).start();
             new WriterThread(s, this).start();
+            new ReaderThread(s, this).start();
         }catch(Exception e){
             System.out.println(e);
         }

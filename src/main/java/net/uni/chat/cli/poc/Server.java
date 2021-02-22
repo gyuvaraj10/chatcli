@@ -25,15 +25,10 @@ public class Server {
             }
         }catch (Exception ignore) { }
     }
-    void broadCastMessage(String message) {
+    void broadCastMessage(String message, ClientReaderWriter readerWrit) {
         for(ClientReaderWriter readerWriter: set) {
-            String userNamePrefix = "New User joined ";
-            if(message.startsWith(userNamePrefix)) {
-                String username = message.split(userNamePrefix)[1];
-                readerWriter.setUserName(username);
-            }
-            if(readerWriter.getUserName() != null && !message.equals(userNamePrefix+readerWriter.getUserName())) {
-                readerWriter.sendMessage(readerWriter.getUserName()+":"+message);
+            if(!readerWriter.getUserName().equalsIgnoreCase(readerWrit.getUserName())) {
+                readerWriter.sendMessage(message);
             }
         }
     }

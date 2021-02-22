@@ -24,8 +24,13 @@ public class ReaderThread extends Thread{
     public void run() {
         while(true) {
             try {
-                System.out.println(reader.readLine());
+                System.out.println("\n"+reader.readLine());
+//                if (client.getUserName() != null) {
+//                    System.out.print("[" + client.getUserName() + "]: ");
+//                }
             } catch (IOException ignore) {
+                System.out.println(ignore);
+                break;
             }
         }
     }

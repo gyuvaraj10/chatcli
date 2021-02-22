@@ -20,9 +20,15 @@ public class ClientReaderWriter extends Thread{
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             OutputStream outputStream = socket.getOutputStream();
             writer = new PrintWriter(outputStream, true);
+            String message = bufferedReader.readLine();
+            String userNamePrefix = "New User joined ";
+            if(message.startsWith(userNamePrefix)) {
+                String username = message.split(userNamePrefix)[1];
+                this.setUserName(username);
+            }
             while(true) {
-                String line = bufferedReader.readLine();
-                server.broadCastMessage(line);
+                message = bufferedReader.readLine();
+                server.broadCastMessage(message, this);
             }
         } catch (Exception ignore) {
         }
