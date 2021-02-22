@@ -8,23 +8,17 @@ public class Client {
 
     public static void main(String[] args) {
         Client client = new Client();
-        client.runClient();
+        client.userName = args[2];
+        client.runClient(args[0], Integer.parseInt(args[1]));
     }
 
-    public void runClient() {
+    public void runClient(String host, int port) {
         try{
-            Socket s=new Socket("localhost",8888);
-            new WriterThread(s, this).start();
+            Socket s=new Socket(host,port);
+            new WriterThread(s, this, userName).start();
             new ReaderThread(s, this).start();
         }catch(Exception e){
             System.out.println(e);
         }
-    }
-    void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    String getUserName() {
-        return this.userName;
     }
 }

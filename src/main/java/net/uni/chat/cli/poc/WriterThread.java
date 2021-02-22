@@ -7,9 +7,11 @@ public class WriterThread extends Thread{
 
     private PrintWriter writer;
     private Client client;
+    private String userName;
 
-    public WriterThread(Socket socket, Client client) {
+    public WriterThread(Socket socket, Client client, String userName) {
         try {
+            this.userName = userName;
             this.client = client;
             OutputStream output = socket.getOutputStream();
             writer = new PrintWriter(output, true);
@@ -21,8 +23,8 @@ public class WriterThread extends Thread{
 
     public void run() {
         Console console = System.console();
-        String userName = console.readLine("\nEnter your name: ");
-        client.setUserName(userName);
+//        String userName = console.readLine("\nEnter your name: ");
+//        client.setUserName(userName);
         writer.println(String.format("New User joined %s",userName));
         while(true) {
             String text = console.readLine(userName+":");

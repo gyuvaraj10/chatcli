@@ -16,6 +16,7 @@ public class Server {
 
     public void runServer() {
         try{
+            System.out.println("Server is accepting connections at 8888 port");
             ServerSocket serverSocket= new ServerSocket(8888);
             while(true) {
                 Socket socket = serverSocket.accept();
