@@ -25,9 +25,6 @@ public class ReaderThread extends Thread{
         while(true) {
             try {
                 System.out.println("\n"+reader.readLine());
-//                if (client.getUserName() != null) {
-//                    System.out.print("[" + client.getUserName() + "]: ");
-//                }
             } catch (IOException ignore) {
                 System.out.println(ignore);
                 break;

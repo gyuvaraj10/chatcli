@@ -9,17 +9,20 @@ public class ClientReaderWriter extends Thread{
     private Server server;
     private PrintWriter writer;
     private String userName;
+    private BufferedReader bufferedReader;
 
     public ClientReaderWriter(Socket socket, Server server) {
         this.socket = socket;
         this.server = server;
+        try {
+            bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            OutputStream outputStream = socket.getOutputStream();
+            writer = new PrintWriter(outputStream, true);
+        } catch (Exception ignore) {}
     }
 
     public void run() {
         try {
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            OutputStream outputStream = socket.getOutputStream();
-            writer = new PrintWriter(outputStream, true);
             String message = bufferedReader.readLine();
             String userNamePrefix = "New User joined ";
             if(message.startsWith(userNamePrefix)) {
@@ -28,6 +31,13 @@ public class ClientReaderWriter extends Thread{
             }
             while(true) {
                 message = bufferedReader.readLine();
+                switch (message.split(":")[1]) {
+                    case "show users": {
+                        server.broadCastToRequestedUser(this);
+                        break;
+                    }
+                    default: break;
+                }
                 server.broadCastMessage(message, this);
             }
         } catch (Exception ignore) {
