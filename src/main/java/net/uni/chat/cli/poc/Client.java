@@ -1,5 +1,6 @@
 package net.uni.chat.cli.poc;
 
+import java.io.IOException;
 import java.net.Socket;
 
 public class Client {
@@ -15,8 +16,21 @@ public class Client {
     public void runClient(String host, int port) {
         try{
             Socket s=new Socket(host,port);
-            new WriterThread(s, this, userName).start();
-            new ReaderThread(s, this).start();
+            WriterThread writerThread = new WriterThread(s, this, userName);
+            writerThread.start();
+            ReaderThread readerThread =new ReaderThread(s, this);
+            readerThread.start();
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                try {
+                    System.out.println(userName);
+                    writerThread.setDoNotTerminate(false);
+                    readerThread.setDoNotTerminate(false);
+                    writerThread.publishShutdown();
+                    s.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }));
         }catch(Exception e){
             System.out.println(e);
         }

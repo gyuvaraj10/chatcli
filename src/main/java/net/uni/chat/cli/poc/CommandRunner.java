@@ -18,6 +18,12 @@ public class CommandRunner {
                 server.broadCastToRequestedUser(this.crw);
                 break;
             }
+            case "bye": {
+                String userName = message.split(":")[0];
+                server.cleanUser(userName);
+                server.broadCastMessage(userName+ " Left the group", this.crw);
+                break;
+            }
             default: break;
         }
     }
@@ -27,7 +33,8 @@ public class CommandRunner {
     }
 
     enum Command {
-        SHOW_USERS("show users");
+        SHOW_USERS("show users"),
+        BYE("bye");
         private final String command;
         Command(String command) {
             this.command = command;

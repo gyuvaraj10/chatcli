@@ -5,9 +5,20 @@ import java.net.Socket;
 
 public class ReaderThread extends Thread{
     private BufferedReader reader;
+    private DataInputStream din;
 
     private Socket socket;
     private Client client;
+
+    public boolean isDoNotTerminate() {
+        return doNotTerminate;
+    }
+
+    public void setDoNotTerminate(boolean doNotTerminate) {
+        this.doNotTerminate = doNotTerminate;
+    }
+
+    private boolean doNotTerminate = true;
 
     public ReaderThread(Socket socket, Client client) {
         this.socket = socket;
@@ -20,7 +31,7 @@ public class ReaderThread extends Thread{
     }
 
     public void run() {
-        while(true) {
+        while(isDoNotTerminate()) {
             try {
                 System.out.println("\n"+reader.readLine());
             } catch (IOException ignore) {

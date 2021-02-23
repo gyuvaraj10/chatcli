@@ -6,6 +6,10 @@ import java.util.Date;
 
 public class ClientReaderWriter extends Thread{
 
+    public Socket getSocket() {
+        return socket;
+    }
+
     private Socket socket;
     private Server server;
     private PrintWriter writer;
@@ -29,12 +33,12 @@ public class ClientReaderWriter extends Thread{
         try {
             String message = bufferedReader.readLine();
             System.out.println(message);
-            String userNamePrefix = "New User joined ";
+            String userNamePrefix = "Server: New User joined ";
             if(message.startsWith(userNamePrefix)) {
                 String username = message.split(userNamePrefix)[1];
                 this.setUserName(username);
+                server.broadCastMessage(message, this);
             }
-
             while(true) {
                 message = bufferedReader.readLine();
                 if(commandRunner.isACommand(message.split(":")[1])) {
