@@ -1,7 +1,9 @@
 package net.uni.chat.cli.poc;
 
 import java.io.*;
+import java.net.InetAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 public class WriterThread extends Thread{
 
@@ -23,9 +25,13 @@ public class WriterThread extends Thread{
 
     public void run() {
         Console console = System.console();
-//        String userName = console.readLine("\nEnter your name: ");
-//        client.setUserName(userName);
-        writer.println(String.format("New User joined %s",userName));
+        try {
+            InetAddress myIP=InetAddress.getLocalHost();
+            writer.println(String.format("New User joined %s,%s",userName, myIP.getHostAddress()));
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+
         while(true) {
             String text = console.readLine(userName+":");
             if(!text.equalsIgnoreCase("")) {

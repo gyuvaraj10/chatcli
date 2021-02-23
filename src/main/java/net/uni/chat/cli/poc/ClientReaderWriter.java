@@ -2,6 +2,7 @@ package net.uni.chat.cli.poc;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.Date;
 
 public class ClientReaderWriter extends Thread{
 
@@ -9,7 +10,9 @@ public class ClientReaderWriter extends Thread{
     private Server server;
     private PrintWriter writer;
     private String userName;
+    private String role;
     private BufferedReader bufferedReader;
+    private CommandRunner commandRunner;
 
     public ClientReaderWriter(Socket socket, Server server) {
         this.socket = socket;
@@ -17,6 +20,7 @@ public class ClientReaderWriter extends Thread{
         try {
             bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             OutputStream outputStream = socket.getOutputStream();
+            commandRunner = new CommandRunner(server, this);
             writer = new PrintWriter(outputStream, true);
         } catch (Exception ignore) {}
     }
@@ -24,21 +28,21 @@ public class ClientReaderWriter extends Thread{
     public void run() {
         try {
             String message = bufferedReader.readLine();
+            System.out.println(message);
             String userNamePrefix = "New User joined ";
             if(message.startsWith(userNamePrefix)) {
                 String username = message.split(userNamePrefix)[1];
                 this.setUserName(username);
             }
+
             while(true) {
                 message = bufferedReader.readLine();
-                switch (message.split(":")[1]) {
-                    case "show users": {
-                        server.broadCastToRequestedUser(this);
-                        break;
-                    }
-                    default: break;
+                if(commandRunner.isACommand(message.split(":")[1])) {
+                    commandRunner.runCommand(message);
+                } else {
+                    System.out.println(new Date().toString()+" "+message);
+                    server.broadCastMessage(message, this);
                 }
-                server.broadCastMessage(message, this);
             }
         } catch (Exception ignore) {
         }
@@ -57,5 +61,13 @@ public class ClientReaderWriter extends Thread{
 
     public String getUserName() {
         return this.userName;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getRole() {
+        return this.role;
     }
 }

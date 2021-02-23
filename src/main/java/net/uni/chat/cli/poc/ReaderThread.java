@@ -1,8 +1,6 @@
 package net.uni.chat.cli.poc;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.Socket;
 
 public class ReaderThread extends Thread{
