@@ -22,6 +22,7 @@ public class CommandRunner {
                 String userName = message.split(":")[0];
                 server.cleanUser(userName);
                 server.broadCastMessage(userName+ " Left the group", this.crw);
+                server.assignCoordinatorRole();
                 break;
             }
             default: break;

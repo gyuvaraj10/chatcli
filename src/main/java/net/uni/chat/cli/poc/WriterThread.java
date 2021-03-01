@@ -20,6 +20,7 @@ public class WriterThread extends Thread{
     }
 
     private boolean doNotTerminate = true;
+
     public WriterThread(Socket socket, Client client, String userName) {
         try {
             this.userName = userName;

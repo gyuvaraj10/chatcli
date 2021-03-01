@@ -1,6 +1,5 @@
 package net.uni.chat.cli.poc;
 
-import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashSet;
@@ -13,7 +12,6 @@ public class Server {
     public static void main(String[] args) {
        Server server = new Server();
        server.runServer();
-
     }
 
     public void runServer() {
@@ -32,23 +30,7 @@ public class Server {
                 set.add(cr);
                 cr.start();
             }
-
         }catch (Exception ignore) { }
-    }
-
-    void removeInActive() {
-        set.removeIf(clientReaderWriter -> {
-            try {
-                int available = clientReaderWriter.getSocket().getInputStream().available();
-                if(available == -1) {
-                    System.out.println(clientReaderWriter.getUserName() + " Left");
-                }
-                return available == -1;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return false;
-        });
     }
 
     void broadCastMessage(String message, ClientReaderWriter readerWrit) {
@@ -77,6 +59,13 @@ public class Server {
         return sb.toString();
     }
 
+    void assignCoordinatorRole() {
+        for(ClientReaderWriter readerWriter: set) {
+            readerWriter.setRole("Coordinator");
+            readerWriter.sendMessage("Congratulations! You have now become the Coordinator");
+            break;
+        }
+    }
     void cleanUser(String userName) {
         set.removeIf(x->x.getUserName().equals(userName));
     }
