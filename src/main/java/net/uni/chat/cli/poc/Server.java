@@ -67,6 +67,7 @@ public class Server {
         }
     }
     void cleanUser(String userName) {
-        set.removeIf(x->x.getUserName().equals(userName));
+        boolean isUserRemoved = set.removeIf(x->x.getUserName().equals(userName));
+        System.out.println(isUserRemoved);
     }
 }
