@@ -1,5 +1,6 @@
 package net.uni.chat.cli.poc;
 
+import java.io.Console;
 import java.io.IOException;
 import java.net.Socket;
 
@@ -10,6 +11,7 @@ public class Client {
     public static void main(String[] args) {
         Client client = new Client();
         client.userName = args[2];
+//        Console console = System.console();
         client.runClient(args[0], Integer.parseInt(args[1]));
     }
 

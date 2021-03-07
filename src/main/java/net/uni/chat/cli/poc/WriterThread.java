@@ -33,6 +33,18 @@ public class WriterThread extends Thread {
         }
     }
 
+    public WriterThread(Socket socket, Client client, String userName, Console console) {
+        try {
+            this.userName = userName;
+            this.client = client;
+            OutputStream output = socket.getOutputStream();
+            writer = new PrintWriter(output, true);
+            this.console = console;
+        } catch (IOException ex) {
+            System.out.println("Error getting output stream: " + ex.getMessage());
+        }
+    }
+
     public void run() {
         try {
             InetAddress myIP=InetAddress.getLocalHost();

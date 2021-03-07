@@ -38,9 +38,7 @@ public class ClientReaderWriter extends Thread{
             while(true) {
                 message = bufferedReader.readLine();
                 if(commandRunner.isACommand(message.split(":")[1])) {
-                    if(this.getRole().equals("Coordinator")) {
-                        commandRunner.runCommand(message);
-                    }
+                    commandRunner.runCommand(message);
                 } else {
                     System.out.println(new Date().toString()+" "+message);
                     server.broadCastMessage(message, this);
