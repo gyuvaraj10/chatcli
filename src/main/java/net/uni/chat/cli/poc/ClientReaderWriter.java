@@ -49,10 +49,7 @@ public class ClientReaderWriter extends Thread{
     }
 
     public void sendMessage(String message) {
-        try {
-            writer.println(message);
-        } catch (Exception ignore) {
-        }
+        writer.println(message);
     }
 
     public void setUserName(String userName) {
