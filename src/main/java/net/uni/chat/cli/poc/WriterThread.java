@@ -4,7 +4,7 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 
-public class WriterThread extends Thread{
+public class WriterThread extends Thread {
 
     private PrintWriter writer;
     private Client client;
@@ -30,7 +30,6 @@ public class WriterThread extends Thread{
             console = System.console();
         } catch (IOException ex) {
             System.out.println("Error getting output stream: " + ex.getMessage());
-            ex.printStackTrace();
         }
     }
 

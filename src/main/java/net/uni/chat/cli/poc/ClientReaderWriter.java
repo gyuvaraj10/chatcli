@@ -6,10 +6,6 @@ import java.util.Date;
 
 public class ClientReaderWriter extends Thread{
 
-    public Socket getSocket() {
-        return socket;
-    }
-
     private Socket socket;
     private Server server;
     private PrintWriter writer;
