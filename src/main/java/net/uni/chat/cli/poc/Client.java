@@ -20,7 +20,7 @@ public class Client {
             Socket s=new Socket(host,port);
             WriterThread writerThread = new WriterThread(s, userName, console);
             writerThread.start();
-            ReaderThread readerThread =new ReaderThread(s, this);
+            ReaderThread readerThread =new ReaderThread(s, System.out);
             readerThread.start();
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
                 try {
