@@ -16,8 +16,10 @@ import java.io.PipedOutputStream;
 import java.lang.reflect.Field;
 import java.net.Socket;
 
+import static org.mockito.ArgumentMatchers.*;
+
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(fullyQualifiedNames = {"net.uni.chat.cli.poc.Client", "java.lang.System"})
+@PrepareForTest(fullyQualifiedNames = {"net.uni.chat.cli.poc.Client", "java.io.Console"})
 public class TestClient {
 
     private String host = "localhost";
@@ -33,6 +35,7 @@ public class TestClient {
         Socket socket = PowerMockito.mock(Socket.class);
         try {
             PowerMockito.whenNew(Socket.class).withAnyArguments().thenReturn(socket);
+            PowerMockito.when(console.readLine(anyString())).thenReturn("test");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -40,6 +43,6 @@ public class TestClient {
         PowerMockito.when(socket.getOutputStream()).thenReturn(pipedOutputStream);
         PipedInputStream pipedInputStream = new PipedInputStream();
         PowerMockito.when(socket.getInputStream()).thenReturn(pipedInputStream);
-        client.runClient(host,port);
+        client.runClient(host,port, console);
     }
 }

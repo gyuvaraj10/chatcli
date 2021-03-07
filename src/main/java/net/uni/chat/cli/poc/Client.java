@@ -11,14 +11,14 @@ public class Client {
     public static void main(String[] args) {
         Client client = new Client();
         client.userName = args[2];
-//        Console console = System.console();
-        client.runClient(args[0], Integer.parseInt(args[1]));
+        Console console = System.console();
+        client.runClient(args[0], Integer.parseInt(args[1]), console);
     }
 
-    public void runClient(String host, int port) {
+    public void runClient(String host, int port, Console console) {
         try{
             Socket s=new Socket(host,port);
-            WriterThread writerThread = new WriterThread(s, this, userName);
+            WriterThread writerThread = new WriterThread(s, userName, console);
             writerThread.start();
             ReaderThread readerThread =new ReaderThread(s, this);
             readerThread.start();

@@ -15,7 +15,7 @@ public class CommandRunner {
     public void runCommand(String message) {
         switch (message.split(":")[1]) {
             case "show users": {
-                if (this.crw.getRole().equals("Coordinator")) {
+                if (this.crw.getRole().equalsIgnoreCase("Coordinator")) {
                     server.broadCastToRequestedUser(this.crw);
                 }
                 break;
