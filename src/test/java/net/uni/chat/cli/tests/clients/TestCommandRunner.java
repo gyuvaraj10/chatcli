@@ -20,11 +20,10 @@ import static org.mockito.ArgumentMatchers.anyString;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(fullyQualifiedNames = {"net.uni.chat.cli.poc.CommandRunner"})
-
 public class TestCommandRunner {
 
     @Test
-    public void testRunCommand() throws Exception {
+    public void testRunCommandShowUsersForCoordinator() throws Exception {
         Server server = new Server();
         server = PowerMockito.spy(server);
         Socket socket = PowerMockito.mock(Socket.class);

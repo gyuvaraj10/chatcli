@@ -9,13 +9,11 @@ import org.mockito.stubbing.Answer;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-
 import java.io.*;
 import java.lang.reflect.Field;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Arrays;
-
 import static org.mockito.ArgumentMatchers.anyString;
 
 @RunWith(PowerMockRunner.class)
@@ -26,12 +24,8 @@ public class TestWriterThread {
     public void testWriteMessage() throws Exception {
         Console console = PowerMockito.mock(Console.class);
         Socket socket = PowerMockito.mock(Socket.class);
-        try {
-            PowerMockito.whenNew(Socket.class).withAnyArguments().thenReturn(socket);
-            PowerMockito.when(console.readLine(anyString())).thenReturn("test");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        PowerMockito.whenNew(Socket.class).withAnyArguments().thenReturn(socket);
+        PowerMockito.when(console.readLine(anyString())).thenReturn("test");
         PipedOutputStream pipedOutputStream = new PipedOutputStream();
         PowerMockito.when(socket.getOutputStream()).thenReturn(pipedOutputStream);
         WriterThread writerThread = new WriterThread(socket,  "Test", console);
