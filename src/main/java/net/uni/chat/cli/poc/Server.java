@@ -24,8 +24,8 @@ public class Server {
             System.out.println("Server is accepting connections on 8888 port");
             ServerSocket serverSocket = new ServerSocket(8888);
             while(true) {
-                Socket socket = serverSocket.accept();
-                ClientReaderWriter cr = new ClientReaderWriter(socket, this);
+                Socket socket = serverSocket.accept(); //server will wait until it receives a new connection from the client/user
+                ClientReaderWriter cr = new ClientReaderWriter(socket, this); //reader and write object that holds the responsibility of reading and writing to the client
                 if(set.size() == 0) {
                     cr.sendMessage("Congratulations! You are the first member and the Coordinator");
                     cr.setRole("Coordinator");

@@ -42,7 +42,7 @@ public class WriterThread extends Thread {
 
     public void writeMessage() throws UnknownHostException  {
         InetAddress myIP=InetAddress.getLocalHost();
-        writer.println(String.format("Server: New User joined %s,%s",userName, myIP.getHostAddress()));
+        writer.println(String.format("Server: New User joined %s,%s",userName, myIP.getHostAddress())); //messages are written to the server
         while(isDoNotTerminate()) {
             String text = console.readLine(userName+":");
             if(!text.equalsIgnoreCase("")) {
