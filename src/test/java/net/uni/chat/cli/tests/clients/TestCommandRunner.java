@@ -12,6 +12,8 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
 import java.lang.reflect.Field;
 import java.net.Socket;
 import java.util.Set;
@@ -27,6 +29,10 @@ public class TestCommandRunner {
         Server server = new Server();
         server = PowerMockito.spy(server);
         Socket socket = PowerMockito.mock(Socket.class);
+        PipedInputStream pipedInputStream = new PipedInputStream();
+        PowerMockito.when(socket.getInputStream()).thenReturn(pipedInputStream);
+        PipedOutputStream pipedOutputStream = new PipedOutputStream();
+        PowerMockito.when(socket.getOutputStream()).thenReturn(pipedOutputStream);
         ClientReaderWriter clientReaderWriter = new ClientReaderWriter(socket, server);
         clientReaderWriter.setRole("Coordinator");
         clientReaderWriter.setUserName("SpiderMan");
