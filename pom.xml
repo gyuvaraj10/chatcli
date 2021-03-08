@@ -25,7 +25,7 @@
 
     <profiles>
         <profile>
-            <id>server</id>
+            <id>client</id>
             <build>
                 <plugins>
                     <plugin>
@@ -53,7 +53,7 @@
             </build>
         </profile>
         <profile>
-            <id>client</id>
+            <id>server</id>
             <build>
                 <plugins>
                     <plugin>
