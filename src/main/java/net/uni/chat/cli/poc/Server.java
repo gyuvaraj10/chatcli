@@ -14,6 +14,11 @@ public class Server {
        server.runServer();
     }
 
+    /**
+     * This method accepts connection/request from each client on 8888 port
+     * After the successful connection, the server initiates and assigns a reader and writer
+     * processes for each client connected to the server.
+     */
     public void runServer() {
         try{
             System.out.println("Server is accepting connections on 8888 port");
@@ -30,9 +35,16 @@ public class Server {
                 set.add(cr);
                 cr.start();
             }
-        }catch (Exception ignore) { }
+        }catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
+    /**
+     * broadcasts the messages to all the clients connected in the group
+     * @param message message to be broad casted
+     * @param readerWrit client reader writer object
+     */
     void broadCastMessage(String message, ClientReaderWriter readerWrit) {
         for(ClientReaderWriter readerWriter: set) {
             if(!readerWriter.getUserName().equalsIgnoreCase(readerWrit.getUserName())) {
@@ -41,6 +53,10 @@ public class Server {
         }
     }
 
+    /**
+     * broadcasts the message to requested user only. This method is used for client initiated commands e.g., show users
+     * @param readerWrit client's reader and writer object who initiates the command
+     */
     void broadCastToRequestedUser(ClientReaderWriter readerWrit) {
         for(ClientReaderWriter readerWriter: set) {
             if(readerWriter.getUserName().equalsIgnoreCase(readerWrit.getUserName())) {
@@ -50,6 +66,10 @@ public class Server {
         }
     }
 
+    /**
+     * List the users/clients connected to the server seperated by comma
+     * @return clients seperated by comma
+     */
     String listUsers() {
         StringBuilder sb = new StringBuilder();
         sb.append("Connected Users: ");
@@ -59,6 +79,9 @@ public class Server {
         return sb.toString();
     }
 
+    /**
+     * assigns a coordinator role to a client
+     */
     void assignCoordinatorRole() {
         for(ClientReaderWriter readerWriter: set) {
             readerWriter.setRole("Coordinator");
@@ -66,6 +89,11 @@ public class Server {
             break;
         }
     }
+
+    /**
+     * removes the user if exited from the group
+     * @param userName
+     */
     void cleanUser(String userName) {
         boolean isUserRemoved = set.removeIf(x->x.getUserName().equals(userName));
         System.out.println(isUserRemoved);

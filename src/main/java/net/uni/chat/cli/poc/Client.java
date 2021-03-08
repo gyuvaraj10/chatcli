@@ -15,6 +15,12 @@ public class Client {
         client.runClient(args[0], Integer.parseInt(args[1]), console);
     }
 
+    /**
+     * runs console writer thread and reader thread in parallel which allows the client to write and read
+     * @param host hostname of the server to connect
+     * @param port port number of the server to connect
+     * @param console console object to be used
+     */
     public void runClient(String host, int port, Console console) {
         try{
             Socket s=new Socket(host,port);

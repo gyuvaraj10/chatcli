@@ -4,9 +4,8 @@ import java.io.*;
 import java.net.Socket;
 import java.util.Date;
 
-public class ClientReaderWriter extends Thread{
+public class ClientReaderWriter extends Thread {
 
-    private Socket socket;
     private Server server;
     private PrintWriter writer;
     private String userName;
@@ -14,17 +13,25 @@ public class ClientReaderWriter extends Thread{
     private BufferedReader bufferedReader;
     private CommandRunner commandRunner;
 
-    public ClientReaderWriter(Socket socket, Server server) {
-        this.socket = socket;
+    /**
+     * Initializes the client specific writer object to write the data to client
+     * @param socket client socket object
+     * @param server server object to utilize the server operations
+     * @throws IOException
+     */
+    public ClientReaderWriter(Socket socket, Server server) throws IOException {
         this.server = server;
-        try {
-            bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            OutputStream outputStream = socket.getOutputStream();
-            commandRunner = new CommandRunner(server, this);
-            writer = new PrintWriter(outputStream, true);
-        } catch (Exception ignore) {}
+        bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        OutputStream outputStream = socket.getOutputStream();
+        commandRunner = new CommandRunner(server, this);
+        writer = new PrintWriter(outputStream, true);
     }
 
+    /**
+     * this collects the messages sent by each client and broadcasts the messages/commands(show users, bye)
+     * to all the clients
+     * This operation runs in an independent thread for each client
+     */
     public void run() {
         try {
             String message = bufferedReader.readLine();
@@ -44,7 +51,8 @@ public class ClientReaderWriter extends Thread{
                     server.broadCastMessage(message, this);
                 }
             }
-        } catch (Exception ignore) {
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
         }
     }
 
