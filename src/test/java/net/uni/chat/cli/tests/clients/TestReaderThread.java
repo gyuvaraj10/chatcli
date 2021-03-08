@@ -16,7 +16,7 @@ import java.net.Socket;
 import static org.mockito.ArgumentMatchers.anyString;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(fullyQualifiedNames = {"net.uni.chat.cli.poc.ReaderThread"})
+@PrepareForTest(fullyQualifiedNames = {"net.uni.chat.cli.poc.ReaderThread", "java.lang.System"})
 public class TestReaderThread {
 
     @Test
