@@ -33,28 +33,28 @@ public class TestCommandRunnerShowUsers {
         PowerMockito.when(socket.getInputStream()).thenReturn(pipedInputStream);
         PipedOutputStream pipedOutputStream = new PipedOutputStream();
         PowerMockito.when(socket.getOutputStream()).thenReturn(pipedOutputStream);
-        ClientReaderWriter clientReaderWriter = new ClientReaderWriter(socket, server);
-        clientReaderWriter.setRole("Coordinator");
-        clientReaderWriter.setUserName("SpiderMan");
-        clientReaderWriter = PowerMockito.spy(clientReaderWriter);
-        ClientReaderWriter clientReaderWriter2 = new ClientReaderWriter(socket, server);
-        clientReaderWriter2.setRole("Member");
-        clientReaderWriter2.setUserName("GhostRider");
-        clientReaderWriter2 = PowerMockito.spy(clientReaderWriter2);
+        ClientReaderWriter crwCoordinator = new ClientReaderWriter(socket, server);
+        crwCoordinator.setRole("Coordinator");
+        crwCoordinator.setUserName("SpiderMan");
+        crwCoordinator = PowerMockito.spy(crwCoordinator);
+        ClientReaderWriter crwMember = new ClientReaderWriter(socket, server);
+        crwMember.setRole("Member");
+        crwMember.setUserName("GhostRider");
+        crwMember = PowerMockito.spy(crwMember);
         Field field = Server.class.getDeclaredField("set");
         field.setAccessible(true);
         Set<ClientReaderWriter> set = (Set<ClientReaderWriter>)field.get(null);
-        set.add(clientReaderWriter);
-        set.add(clientReaderWriter2);
+        set.add(crwCoordinator);
+        set.add(crwMember);
         field.set(null, set);
-        CommandRunner commandRunner = new CommandRunner(server, clientReaderWriter);
+        CommandRunner commandRunnerCoordinator = new CommandRunner(server, crwCoordinator);
         PowerMockito.doAnswer(new Answer<Object>() {
             @Override
             public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
                 Assert.assertTrue(true);
                 return "invocationOnMock.callRealMethod()";
             }
-        }).when(clientReaderWriter, "sendMessage", anyString());
+        }).when(crwCoordinator, "sendMessage", anyString());
 
         PowerMockito.doAnswer(new Answer<Object>() {
             @Override
@@ -62,8 +62,8 @@ public class TestCommandRunnerShowUsers {
                 Assert.fail("Expected Not to call this method");
                 return "invocationOnMock.callRealMethod()";
             }
-        }).when(clientReaderWriter2, "sendMessage", anyString());
-        commandRunner.runCommand("Test:show users");
+        }).when(crwMember, "sendMessage", anyString());
+        commandRunnerCoordinator.runCommand("Test:show users");
     }
 
 
