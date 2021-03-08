@@ -23,17 +23,18 @@ public class Client {
      */
     public void runClient(String host, int port, Console console) {
         try{
-            Socket s=new Socket(host,port);
-            WriterThread writerThread = new WriterThread(s, userName, console);
+            Socket s=new Socket(host,port); //sends the request to the server
+            WriterThread writerThread = new WriterThread(s, userName, console); //writes the messages
             writerThread.start();
-            ReaderThread readerThread =new ReaderThread(s, System.out);
+            ReaderThread readerThread =new ReaderThread(s, System.out); //receives the messages
             readerThread.start();
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
                 try {
                     System.out.println(userName);
-                    writerThread.setDoNotTerminate(false);
-                    readerThread.setDoNotTerminate(false);
-                    writerThread.publishShutdown();
+                    writerThread.setDoNotTerminate(false); //terminate the writer loop /thread
+                    readerThread.setDoNotTerminate(false); //terminate the reader loop/thread
+                    writerThread.publishShutdown(); //send 'User Left the group' message to the server and
+                    // the server will broadcast this message to the other members of the group automatically
                     s.close();
                 } catch (IOException e) {
                     e.printStackTrace();

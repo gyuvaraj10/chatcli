@@ -36,7 +36,7 @@ public class ReaderThread extends Thread {
     public void readMessage() {
         while(isDoNotTerminate()) {
             try {
-                printStream.println("\n"+reader.readLine());
+                printStream.println("\n"+reader.readLine()); //prints the message onto the console
             } catch (IOException ignore) {
                 System.out.println(ignore);
                 break;
