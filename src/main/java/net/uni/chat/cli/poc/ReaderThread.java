@@ -1,33 +1,42 @@
 package net.uni.chat.cli.poc;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.Socket;
 
-public class ReaderThread extends Thread{
+public class ReaderThread extends Thread {
+
     private BufferedReader reader;
-
     private Socket socket;
-    private Client client;
+    private  PrintStream printStream;
 
-    public ReaderThread(Socket socket, Client client) {
+    public ReaderThread(Socket socket, PrintStream printStream) {
         this.socket = socket;
-        this.client = client;
+        this.printStream = printStream;
         try {
             reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
+    public boolean isDoNotTerminate() {
+        return doNotTerminate;
+    }
+
+    public void setDoNotTerminate(boolean doNotTerminate) {
+        this.doNotTerminate = doNotTerminate;
+    }
+
+    private boolean doNotTerminate = true;
+
     public void run() {
-        while(true) {
+        readMessage();
+    }
+
+    public void readMessage() {
+        while(isDoNotTerminate()) {
             try {
-                System.out.println("\n"+reader.readLine());
-//                if (client.getUserName() != null) {
-//                    System.out.print("[" + client.getUserName() + "]: ");
-//                }
+                printStream.println("\n"+reader.readLine());
             } catch (IOException ignore) {
                 System.out.println(ignore);
                 break;
